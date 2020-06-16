@@ -382,7 +382,7 @@
                         },
                         "links": {
                             "ArrivalStationDetails": {
-                                "operationRef": "file:///C:/Users/exn894.BELGIANRAIL/Documents/GraphQL/Server/PMR3.json#/paths/~1api~1v1~1Stations~1{StationId}/get",
+                                "operationRef": "https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3-2.json#/paths/~1api~1v1~1Stations~1{StationId}/get",
                                 "parameters": {
                                     "StationId": "$response.body#/arrivalUicStationId"
                                 }
