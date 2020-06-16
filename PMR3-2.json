@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "title": "PMR3",
+        "title": "PMR-SUB",
         "version": "1.0.0",
         "description": "PMR RESTful API definition",
         "contact": {
@@ -382,7 +382,7 @@
                         },
                         "links": {
                             "ArrivalStationDetails": {
-                                "operationRef": "file:///C:/Users/exn894.BELGIANRAIL/Documents/GraphQL/Server/PMR3.json#/paths/~1api~1v1~1Stations~1{StationId}/get",
+                                "operationRef": "https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3-2.json#/paths/~1api~1v1~1Stations~1{StationId}/get",
                                 "parameters": {
                                     "StationId": "$response.body#/arrivalUicStationId"
                                 }

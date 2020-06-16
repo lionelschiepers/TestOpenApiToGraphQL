@@ -18,16 +18,18 @@ const getData = async url => {
   };
 
 async function main() {
-    // let oas = JSON.parse(await readFile('./pmr3.json'));
-    // let oas = JSON.parse('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3.json');
+    // links between schema use the title and not the address like defined in the openapi 3.0
+    // https://www.npmjs.com/package/@mikestaub/openapi-to-graphql
+    let oas1 = JSON.parse(await readFile('./pmr3.json'));
+    let oas2 = JSON.parse(await readFile('./pmr3-2.json'));
+    
+    // let oas1 = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3.json');
+    // let oas2 = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3-2.json');
 
-    let oas = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3.json');
-    let oas2 = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3-2.json');
-
-    if (oas == null || oas2 == null)
+    if (oas1 == null || oas2 == null)
         throw new Error('failed to load the file');
 
-    const { schema, report } = await createGraphQLSchema([oas, oas2], 
+    const { schema, report } = await createGraphQLSchema([oas1, oas2], 
         {
             operationIdFieldNames:true,
             requestOptions:
