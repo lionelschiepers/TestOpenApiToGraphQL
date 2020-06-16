@@ -1,0 +1,897 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "PMR3",
+        "version": "1.0.0",
+        "description": "PMR RESTful API definition",
+        "contact": {
+            "name": "Lionel Schiepers",
+            "email": "lionel.schiepers@belgiantrain.be"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "https://www.apache.org/licenses/LICENSE-2.0"
+        }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:4010",
+            "description": "test dev"
+        }
+    ],
+    "paths": {
+        "/api/v1/Journeys/Station/{StationId}/{Date}/{Owner}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/JourneyAndTravelDetails"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "List of journeys"
+                    }
+                },
+                "operationId": "SearchJourneyByDateAndOwner",
+                "summary": "Search for the journeys for the specified station/date/owner"
+            },
+            "parameters": [
+                {
+                    "name": "StationId",
+                    "description": "Station identifier",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                },
+                {
+                    "name": "Date",
+                    "description": "Filter by date",
+                    "schema": {
+                        "format": "date",
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                },
+                {
+                    "name": "Owner",
+                    "description": "Filter by owner",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/api/v1/Stations/WithAssistance": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Station"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Station with assistance"
+                    }
+                },
+                "operationId": "LoadStationsWithAssistance",
+                "summary": "List the stations with assistance"
+            }
+        },
+        "/api/v1/Journeys/Station/{StationId}/{Date}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/JourneyAndTravelDetails"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "List of journeys"
+                    }
+                },
+                "operationId": "SearchJourneyByDate",
+                "summary": "Search for the journeys for the specified station/date"
+            },
+            "parameters": [
+                {
+                    "name": "StationId",
+                    "description": "Filter by station",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                },
+                {
+                    "name": "Date",
+                    "description": "Filter by date",
+                    "schema": {
+                        "format": "date",
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/api/v1/Journeys/CloseAndSendReport": {
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CloseMission"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": "{ success:true }"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Mission closed"
+                    }
+                },
+                "operationId": "CloseJourney",
+                "summary": "Close a journey"
+            }
+        },
+        "/api/v1/Journeys/Accept": {
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AcceptMission"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": "{ success:true }"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Mission accepted"
+                    }
+                },
+                "operationId": "AcceptJourney",
+                "summary": "Accept a journey"
+            }
+        },
+        "/api/v1/Journeys/Refuse": {
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefuseMission"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "examples": {
+                                    "Success": {
+                                        "value": "{ success:true }"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Mission refused"
+                    }
+                },
+                "operationId": "RefuseJourney",
+                "summary": "Refuse a journey that was previously accepted"
+            }
+        },
+        "/api/v1/Reservations": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "examples": {
+                                    "Success": {
+                                        "value": "{ success:true }"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Reservation successfully created"
+                    }
+                },
+                "operationId": "CreateReservation",
+                "summary": "Add a new reservation"
+            }
+        },
+        "/api/v1/Reservations/{ReservationId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Reservation"
+                                }
+                            }
+                        },
+                        "description": "Reservation found"
+                    }
+                },
+                "operationId": "LoadReservation",
+                "summary": "Load the details about a reservation"
+            },
+            "delete": {
+                "parameters": [
+                    {
+                        "name": "ReservationId",
+                        "description": "Reservation identifier",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                },
+                                "examples": {
+                                    "Successful Delete": {
+                                        "value": "{\n    success:true\n}\n"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Reservation deleted"
+                    }
+                },
+                "operationId": "DeleteReservation",
+                "summary": "Delete a reservation"
+            },
+            "parameters": [
+                {
+                    "name": "ReservationId",
+                    "description": "Reservation identifier",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/api/v1/Stations/{StationId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Station"
+                                }
+                            }
+                        },
+                        "description": "Station details"
+                    }
+                },
+                "operationId": "LoadStation",
+                "summary": "Load the details about a station"
+            },
+            "parameters": [
+                {
+                    "name": "StationId",
+                    "description": "Station identifier",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/api/v1/Journeys/{JourneyId}": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Journey"
+                                },
+                                "examples": {
+                                    "Journey-1": {
+                                        "value": {
+                                            "JourneyId": "Journey-001",
+                                            "TrainNumber": "Train-A658",
+                                            "Coach": "1",
+                                            "Seat": "11",
+                                            "Door": "2",
+                                            "DepartureUicStationId": 3,
+                                            "ArrivalUicStationId": 15,
+                                            "ArrivalRemark": "Arrival ok",
+                                            "ArrivalOwner": "owner2",
+                                            "DepartureRemark": "Departure ok",
+                                            "DepartureOwner": "owner1",
+                                            "DepartureDate": "2018-02-10T09:30Z",
+                                            "ArrivalDate": "2018-02-10T09:30Z",
+                                            "ArrivalAssistanceNeeded": true,
+                                            "DepartureAssistanceNeeded": true,
+                                            "Taxi": false,
+                                            "Team": false
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "links": {
+                            "ArrivalStationDetails": {
+                                "operationRef": "file:///C:/Users/exn894.BELGIANRAIL/Documents/GraphQL/Server/PMR3.json#/paths/~1api~1v1~1Stations~1{StationId}/get",
+                                "parameters": {
+                                    "StationId": "$response.body#/arrivalUicStationId"
+                                }
+                            },
+                            "DepartureStationDetails": {
+                                "operationId": "LoadStation",
+                                "parameters": {
+                                    "StationId": "$response.body#/departureUicStationId"
+                                }
+                            }
+                        },
+                        "description": "Journey details"
+                    }
+                },
+                "operationId": "LoadJourney",
+                "summary": "Load the details about a journey"
+            },
+            "parameters": [
+                {
+                    "name": "JourneyId",
+                    "description": "Journey identifier",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        }
+    },
+    "components": {
+        "schemas": {
+            "HandicapType": {
+                "description": "Type of handicap handled by B4You",
+                "enum": [
+                    "UnfixedWheelchair",
+                    "FixedWheelchair",
+                    "ElectronicWheelchair",
+                    "LimitedMobility",
+                    "Blind"
+                ],
+                "type": "string"
+            },
+            "Client": {
+                "description": "Details about a client",
+                "required": [
+                    "FirstName",
+                    "LastName",
+                    "ClientId"
+                ],
+                "type": "object",
+                "properties": {
+                    "FirstName": {
+                        "description": "First name",
+                        "type": "string"
+                    },
+                    "LastName": {
+                        "description": "Last name",
+                        "type": "string"
+                    },
+                    "ClientId": {
+                        "description": "Client identifier",
+                        "type": "integer"
+                    },
+                    "Language": {
+                        "$ref": "#/components/schemas/Language",
+                        "description": "Language type (fr,nl,de,en)"
+                    },
+                    "Gender": {
+                        "$ref": "#/components/schemas/Gender",
+                        "description": "Male/Female"
+                    },
+                    "Phone": {
+                        "description": "Fixed phone number\n",
+                        "type": "string"
+                    },
+                    "MobilePhone": {
+                        "description": "Mobile phone number\n",
+                        "type": "string"
+                    },
+                    "Mail": {
+                        "description": "e-mail address",
+                        "type": "string"
+                    },
+                    "Fax": {
+                        "description": "Fax number",
+                        "type": "string"
+                    }
+                }
+            },
+            "Language": {
+                "description": "Language handled by the application",
+                "enum": [
+                    "FR",
+                    "NL",
+                    "DE",
+                    "EN"
+                ],
+                "type": "string"
+            },
+            "Gender": {
+                "description": "Gender type (male/female)",
+                "enum": [
+                    "Male",
+                    "Female"
+                ],
+                "type": "string"
+            },
+            "AcceptMission": {
+                "description": "Information needed to set a B4You agent to a mission",
+                "required": [
+                    "OwnerId",
+                    "UicStationId",
+                    "JourneyId"
+                ],
+                "type": "object",
+                "properties": {
+                    "OwnerId": {
+                        "description": "Agent that will take the ownership of the mission",
+                        "type": "string"
+                    },
+                    "UicStationId": {
+                        "description": "Station identifier that permits to deduce it concerns the departure or the arrival of a journey",
+                        "type": "integer"
+                    },
+                    "JourneyId": {
+                        "description": "Journey identifier",
+                        "type": "string"
+                    }
+                }
+            },
+            "RefuseMission": {
+                "description": "Information needed to remove a B4You agent from a mission.",
+                "required": [
+                    "OwnerId",
+                    "JourneyId"
+                ],
+                "type": "object",
+                "properties": {
+                    "OwnerId": {
+                        "description": "Operator identifier",
+                        "type": "string"
+                    },
+                    "JourneyId": {
+                        "description": "Journey identifier",
+                        "type": "string"
+                    }
+                }
+            },
+            "CloseMission": {
+                "description": "Information needed to finish a B4You agent mission",
+                "required": [
+                    "OwnerId",
+                    "JourneyId"
+                ],
+                "type": "object",
+                "properties": {
+                    "OwnerId": {
+                        "description": "Operator identifier",
+                        "type": "string"
+                    },
+                    "JourneyId": {
+                        "description": "Journey identifier",
+                        "type": "string"
+                    },
+                    "Remarks": {
+                        "description": "Remarks about the mission",
+                        "type": "string"
+                    },
+                    "Taxi": {
+                        "description": "Taxi used",
+                        "type": "boolean"
+                    },
+                    "Team": {
+                        "description": "Team",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "Station": {
+                "description": "Details about a station",
+                "required": [
+                    "UicStationId",
+                    "AssistanceFacilities",
+                    "NameFr",
+                    "NameNl",
+                    "NameEn",
+                    "NameDe"
+                ],
+                "type": "object",
+                "properties": {
+                    "UicStationId": {
+                        "description": "Station identifier",
+                        "type": "integer"
+                    },
+                    "NameFr": {
+                        "description": "Station name in french",
+                        "type": "string"
+                    },
+                    "NameNl": {
+                        "description": "Station name in dutch",
+                        "type": "string"
+                    },
+                    "NameDe": {
+                        "description": "Station name in german",
+                        "type": "string"
+                    },
+                    "NameEn": {
+                        "description": "Station name in english",
+                        "type": "string"
+                    },
+                    "AssistanceFacilities": {
+                        "description": "Facilities at the station",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/HandicapType"
+                        }
+                    }
+                }
+            },
+            "HandicapDetails": {
+                "description": "Handicap details (information available from a reservation)",
+                "type": "object",
+                "properties": {
+                    "UnfixedWheelchairCount": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "FixedWheelchairCount": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "ElectronicWheelchairCount": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "LimitedMobilityCount": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "BlindCount": {
+                        "description": "",
+                        "type": "integer"
+                    }
+                }
+            },
+            "Journey": {
+                "title": "Journey",
+                "description": "Journey (a travel is made of one or more journeys)",
+                "required": [
+                    "JourneyId",
+                    "ArrivalAssistanceNeeded",
+                    "DepartureAssistanceNeeded",
+                    "ArrivalDate",
+                    "ArrivalUicStationId",
+                    "DepartureDate",
+                    "DepartureUicStationId",
+                    "TrainNumber"
+                ],
+                "type": "object",
+                "properties": {
+                    "JourneyId": {
+                        "description": "Journey identifier.",
+                        "type": "string"
+                    },
+                    "TrainNumber": {
+                        "description": "Train number",
+                        "type": "string"
+                    },
+                    "Coach": {
+                        "description": "Return travel (optional)",
+                        "type": "string"
+                    },
+                    "Seat": {
+                        "description": "Seat number",
+                        "type": "string"
+                    },
+                    "Door": {
+                        "description": "Door number",
+                        "type": "string"
+                    },
+                    "DepartureUicStationId": {
+                        "description": "Departure station identifier",
+                        "type": "integer"
+                    },
+                    "ArrivalUicStationId": {
+                        "description": "Arrival station identifier",
+                        "type": "integer"
+                    },
+                    "ArrivalRemark": {
+                        "description": "Remarks at arrival",
+                        "type": "string"
+                    },
+                    "ArrivalOwner": {
+                        "description": "Team that handled the arrival",
+                        "type": "string"
+                    },
+                    "DepartureRemark": {
+                        "description": "Remarks at departure",
+                        "type": "string"
+                    },
+                    "DepartureOwner": {
+                        "description": "Team that handled the departure",
+                        "type": "string"
+                    },
+                    "DepartureDate": {
+                        "format": "date-time",
+                        "description": "Date of departure",
+                        "type": "string"
+                    },
+                    "ArrivalDate": {
+                        "format": "date-time",
+                        "description": "Date of arrival",
+                        "type": "string"
+                    },
+                    "ArrivalAssistanceNeeded": {
+                        "description": "Assistance at arrival?",
+                        "type": "boolean"
+                    },
+                    "DepartureAssistanceNeeded": {
+                        "description": "Assistance at departure?",
+                        "type": "boolean"
+                    },
+                    "Taxi": {
+                        "description": "Taxi used",
+                        "type": "boolean"
+                    },
+                    "Team": {
+                        "description": "Team",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "JourneyAndTravelDetails": {
+                "title": "JourneyAndTravelDetails",
+                "description": "Details about a journey and its parent travel",
+                "required": [
+                    "JourneyId",
+                    "ReservationDetails",
+                    "ArrivalDate",
+                    "ArrivalUicStationId",
+                    "DepartureDate",
+                    "DepartureUicStationId",
+                    "TrainNumber",
+                    "ArrivalAssistanceNeeded",
+                    "DepartureAssistanceNeeded"
+                ],
+                "type": "object",
+                "properties": {
+                    "JourneyId": {
+                        "description": "Journey identifier.",
+                        "type": "string"
+                    },
+                    "TrainNumber": {
+                        "description": "Train number",
+                        "type": "string"
+                    },
+                    "Coach": {
+                        "description": "Coach number",
+                        "type": "string"
+                    },
+                    "Seat": {
+                        "description": "Seat number",
+                        "type": "string"
+                    },
+                    "Door": {
+                        "description": "Door number",
+                        "type": "string"
+                    },
+                    "DepartureUicStationId": {
+                        "description": "Departure station identifier",
+                        "type": "integer"
+                    },
+                    "ArrivalUicStationId": {
+                        "description": "Arrival station identifier",
+                        "type": "integer"
+                    },
+                    "ArrivalRemark": {
+                        "description": "Remarks at arrival",
+                        "type": "string"
+                    },
+                    "ArrivalOwner": {
+                        "description": "Team that handled the arrival",
+                        "type": "string"
+                    },
+                    "DepartureRemark": {
+                        "description": "Remarks at departure",
+                        "type": "string"
+                    },
+                    "DepartureOwner": {
+                        "description": "Team that handled the departure",
+                        "type": "string"
+                    },
+                    "DepartureDate": {
+                        "format": "date-time",
+                        "description": "Date of departure",
+                        "type": "string"
+                    },
+                    "ArrivalDate": {
+                        "format": "date-time",
+                        "description": "Date of arrival",
+                        "type": "string"
+                    },
+                    "ArrivalAssistanceNeeded": {
+                        "description": "Assistance at arrival?",
+                        "type": "boolean"
+                    },
+                    "DepartureAssistanceNeeded": {
+                        "description": "Assistance at departure?",
+                        "type": "boolean"
+                    },
+                    "ReservationDetails": {
+                        "$ref": "#/components/schemas/TravelAndReservationDetails",
+                        "description": "Reservation details"
+                    }
+                }
+            },
+            "Travel": {
+                "title": "Travel",
+                "description": "Details about a travel and its journeys",
+                "required": [
+                    "Journeys",
+                    "TravelId"
+                ],
+                "type": "object",
+                "properties": {
+                    "TravelId": {
+                        "description": "Travel identifier",
+                        "type": "string"
+                    },
+                    "Journeys": {
+                        "description": "Successive journeys of the travel",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Journey"
+                        }
+                    }
+                }
+            },
+            "TravelAndReservationDetails": {
+                "title": "TravelAndReservationDetails",
+                "description": "Details about a travel and its parent reservation",
+                "required": [
+                    "TravelId",
+                    "ReservationNumber",
+                    "Client",
+                    "HandicapDetails"
+                ],
+                "type": "object",
+                "properties": {
+                    "TravelId": {
+                        "description": "Travel identifier",
+                        "type": "string"
+                    },
+                    "ReservationNumber": {
+                        "description": "Reservation identifier.",
+                        "type": "string"
+                    },
+                    "Client": {
+                        "$ref": "#/components/schemas/Client",
+                        "description": "Reservation owner"
+                    },
+                    "Remarks": {
+                        "description": "Additional details",
+                        "type": "string"
+                    },
+                    "HandicapDetails": {
+                        "$ref": "#/components/schemas/HandicapDetails",
+                        "description": "Detailed information about the handicap"
+                    }
+                }
+            },
+            "Reservation": {
+                "title": "Reservation",
+                "description": "Reservation made of a travel and optionaly a return travel",
+                "required": [
+                    "ReservationNumber",
+                    "Travel",
+                    "Client",
+                    "HandicapDetails"
+                ],
+                "type": "object",
+                "properties": {
+                    "ReservationNumber": {
+                        "description": "Reservation identifier.",
+                        "type": "string"
+                    },
+                    "Travel": {
+                        "$ref": "#/components/schemas/Travel",
+                        "description": "Travel."
+                    },
+                    "TravelReturn": {
+                        "$ref": "#/components/schemas/Travel",
+                        "description": "Return travel (optional)"
+                    },
+                    "Client": {
+                        "$ref": "#/components/schemas/Client",
+                        "description": "Reservation owner"
+                    },
+                    "Remarks": {
+                        "description": "Additional details",
+                        "type": "string"
+                    },
+                    "HandicapDetails": {
+                        "$ref": "#/components/schemas/HandicapDetails",
+                        "description": "Detailed information about the handicap"
+                    }
+                }
+            }
+        }
+    }
+}
