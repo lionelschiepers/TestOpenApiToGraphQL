@@ -37,7 +37,7 @@
                         "description": "List of journeys"
                     }
                 },
-                "operationId": "SearchJourneyByDateAndOwner",
+                "operationId": "SearchJourneyByDateAndOwner2",
                 "summary": "Search for the journeys for the specified station/date/owner"
             },
             "parameters": [
@@ -88,7 +88,7 @@
                         "description": "Station with assistance"
                     }
                 },
-                "operationId": "LoadStationsWithAssistance",
+                "operationId": "LoadStationsWithAssistance2",
                 "summary": "List the stations with assistance"
             }
         },
@@ -109,7 +109,7 @@
                         "description": "List of journeys"
                     }
                 },
-                "operationId": "SearchJourneyByDate",
+                "operationId": "SearchJourneyByDate2",
                 "summary": "Search for the journeys for the specified station/date"
             },
             "parameters": [
@@ -163,7 +163,7 @@
                         "description": "Mission closed"
                     }
                 },
-                "operationId": "CloseJourney",
+                "operationId": "CloseJourney2",
                 "summary": "Close a journey"
             }
         },
@@ -196,7 +196,7 @@
                         "description": "Mission accepted"
                     }
                 },
-                "operationId": "AcceptJourney",
+                "operationId": "AcceptJourney2",
                 "summary": "Accept a journey"
             }
         },
@@ -229,7 +229,7 @@
                         "description": "Mission refused"
                     }
                 },
-                "operationId": "RefuseJourney",
+                "operationId": "RefuseJourney2",
                 "summary": "Refuse a journey that was previously accepted"
             }
         },
@@ -252,7 +252,7 @@
                         "description": "Reservation successfully created"
                     }
                 },
-                "operationId": "CreateReservation",
+                "operationId": "CreateReservation2",
                 "summary": "Add a new reservation"
             }
         },
@@ -270,7 +270,7 @@
                         "description": "Reservation found"
                     }
                 },
-                "operationId": "LoadReservation",
+                "operationId": "LoadReservation2",
                 "summary": "Load the details about a reservation"
             },
             "delete": {
@@ -302,7 +302,7 @@
                         "description": "Reservation deleted"
                     }
                 },
-                "operationId": "DeleteReservation",
+                "operationId": "DeleteReservation2",
                 "summary": "Delete a reservation"
             },
             "parameters": [
@@ -331,7 +331,7 @@
                         "description": "Station details"
                     }
                 },
-                "operationId": "LoadStation",
+                "operationId": "LoadStation2",
                 "summary": "Load the details about a station"
             },
             "parameters": [
@@ -388,7 +388,7 @@
                                 }
                             },
                             "DepartureStationDetails": {
-                                "operationId": "LoadStation",
+                                "operationId": "LoadStation2",
                                 "parameters": {
                                     "StationId": "$response.body#/departureUicStationId"
                                 }
@@ -397,7 +397,7 @@
                         "description": "Journey details"
                     }
                 },
-                "operationId": "LoadJourney",
+                "operationId": "LoadJourney2",
                 "summary": "Load the details about a journey"
             },
             "parameters": [
