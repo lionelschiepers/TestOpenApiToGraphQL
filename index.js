@@ -20,8 +20,8 @@ const getData = async url => {
 async function main() {
     // links between schema use the title and not the address like defined in the openapi 3.0
     // https://www.npmjs.com/package/@mikestaub/openapi-to-graphql
-    let oas1 = JSON.parse(await readFile('./pmr3.json'));
-    let oas2 = JSON.parse(await readFile('./pmr3-2.json'));
+    let oas1 = JSON.parse(await readFile('PMR3.json'));
+    let oas2 = JSON.parse(await readFile('PMR3-2.json'));
     
     // let oas1 = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3.json');
     // let oas2 = await getData('https://raw.githubusercontent.com/lionelschiepers/TestOpenApiToGraphQL/master/PMR3-2.json');
