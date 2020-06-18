@@ -51,8 +51,12 @@ async function main() {
             customFormatErrorFn: (error) => console.log(error)
         })
     )
-    app.listen(10000)
-    console.log('listening')
+
+    let server = app.listen({ port:process.env.PORT || 10000 }, () =>
+    {
+        console.log(`listening on port ${server.address().port}`);
+    });
 }
 
-main().catch(error => console.log(error));
+main()
+    .catch(error => console.log(error));
